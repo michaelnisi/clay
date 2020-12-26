@@ -1,5 +1,6 @@
+*.xcodeproj
 .DS_Store
-/.build
-/Packages
-/*.xcodeproj
-xcuserdata/
+.build
+.swiftpm
+DerivedData
+xcuserdata
