@@ -1,3 +1,3 @@
 # Clay
 
-A description of this package.
+Clay is going to be collection of reusable SwiftUI Views.
