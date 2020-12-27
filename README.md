@@ -1,3 +1,3 @@
 # Clay
 
-Clay is going to be collection of reusable SwiftUI Views.
+Clay is going to be a collection of reusable SwiftUI Views.

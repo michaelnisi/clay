@@ -2,11 +2,11 @@ import XCTest
 @testable import Clay
 
 final class ClayTests: XCTestCase {
-    func testExample() {
-
-    }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+  func testExample() {
+    XCTFail("Write some tests")
+  }
+  
+  static var allTests = [
+    ("testExample", testExample),
+  ]
 }
