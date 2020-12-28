@@ -50,22 +50,18 @@ public struct CustomSliderModifier: ViewModifier {
 /// Aubree Quiroz, https://medium.com/better-programming/reusable-components-in-swiftui-custom-sliders-8c115914b856
 public struct Slider<Component: View>: View {
   
-  var color: Color
   @Binding var value: Double
   var range: (Double, Double)
   var knobWidth: CGFloat?
-  let viewBuilder: (CustomSliderComponents, Double, Color) -> Component
+  let viewBuilder: (CustomSliderComponents, Double) -> Component
   
   public init(
     value: Binding<Double>,
     range: (Double, Double),
-    color: Color,
     knobWidth: CGFloat? = nil,
-    _ viewBuilder: @escaping (CustomSliderComponents, Double, Color) -> Component
+    _ viewBuilder: @escaping (CustomSliderComponents, Double) -> Component
   ) {
     _value = value
-    self.color = color
-    
     self.range = range
     self.viewBuilder = viewBuilder
     self.knobWidth = knobWidth
@@ -94,7 +90,7 @@ public struct Slider<Component: View>: View {
       barRight: CustomSliderModifier(name: .barRight, size: barRightSize, offset: barLeftSize.width),
       knob: CustomSliderModifier(name: .knob, size: knobSize, offset: offsetX))
     
-    return ZStack { viewBuilder(modifiers, value, color).gesture(drag) }
+    return ZStack { viewBuilder(modifiers, value).gesture(drag) }
   }
   
   private func onDragChange(_ drag: DragGesture.Value,_ frame: CGRect) {
@@ -127,7 +123,7 @@ struct Preview: View {
   }
   
   var simple: some View {
-    Slider(value: $value,  range: (0, 100), color: background) { modifiers, value, color in
+    Slider(value: $value,  range: (0, 100)) { modifiers, value in
       ZStack {
         Color.blue.cornerRadius(3).frame(height: 6).modifier(modifiers.barLeft)
         Color.blue.opacity(0.2).cornerRadius(3).frame(height: 6).modifier(modifiers.barRight)
@@ -140,7 +136,7 @@ struct Preview: View {
   }
   
   var track: some View {
-    Slider(value: $value, range: (0, 100), color: background, knobWidth: 0) { modifiers, value, color in
+    Slider(value: $value, range: (0, 100), knobWidth: 0) { modifiers, value in
       ZStack {
         ZStack {
           Color.purple.modifier(modifiers.barLeft)
@@ -156,7 +152,7 @@ struct Preview: View {
   }
   
   var textOverlay: some View {
-    Slider(value: $value, range: (0, 100), color: background, knobWidth: 0) { modifiers, value, color in
+    Slider(value: $value, range: (0, 100), knobWidth: 0) { modifiers, value in
       ZStack {
         background
         LinearGradient(gradient: .init(colors: [background, Color.black.opacity(0.6) ]), startPoint: .bottom, endPoint: .top)
