@@ -5,7 +5,8 @@ import PackageDescription
 let package = Package(
   name: "Clay",
   platforms: [
-    .iOS(.v14), .macOS(.v10_15)
+//    .iOS(.v14), .macOS(.v10_15)
+    .iOS(.v13)
   ],
   products: [
     .library(
