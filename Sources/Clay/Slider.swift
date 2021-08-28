@@ -1,3 +1,14 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the Clay open source project
+//
+// Copyright (c) 2021 Michael Nisi and collaborators
+// Licensed under MIT License
+//
+// See https://github.com/michaelnisi/epic/blob/main/LICENSE for license information
+//
+//===----------------------------------------------------------------------===//
+
 import SwiftUI
 
 private extension Double {
@@ -39,6 +50,7 @@ public struct CustomSliderModifier: ViewModifier {
 
 public struct Slider<Component: View>: View {
   @Binding var value: Double
+  var onDragChange: ((Double) -> Void)?
   var range: (Double, Double)
   var knobWidth: CGFloat?
   let viewBuilder: (CustomSliderComponents, Double) -> Component
@@ -47,12 +59,14 @@ public struct Slider<Component: View>: View {
     value: Binding<Double>,
     range: (Double, Double),
     knobWidth: CGFloat? = nil,
+    onDragChange: ((Double) -> Void)? = nil,
     _ viewBuilder: @escaping (CustomSliderComponents, Double) -> Component
   ) {
     _value = value
     self.range = range
     self.viewBuilder = viewBuilder
     self.knobWidth = knobWidth
+    self.onDragChange = onDragChange
   }
   
   public var body: some View {
@@ -71,8 +85,8 @@ private extension Slider {
     let offsetX = self.getOffsetX(frame: frame)
     
     let knobSize = CGSize(width: knobWidth ?? frame.height, height: frame.height)
-    let barLeftSize = CGSize(width: CGFloat(offsetX + knobSize.width * 0.5), height: frame.height)
-    let barRightSize = CGSize(width: frame.width - barLeftSize.width, height: frame.height)
+    let barLeftSize = CGSize(width: max(0, CGFloat(offsetX + knobSize.width * 0.5)), height: frame.height)
+    let barRightSize = CGSize(width: max(0, frame.width - barLeftSize.width), height: frame.height)
     
     let modifiers = CustomSliderComponents(
       barLeft: CustomSliderModifier(name: .barLeft, size: barLeftSize, offset: 0),
@@ -95,6 +109,7 @@ private extension Slider {
     
     withAnimation(animated ? .easeOut(duration: 0.15) : .none) {
       self.value = value
+      self.onDragChange?(value)
     }
   }
   
@@ -110,7 +125,6 @@ private extension Slider {
 // MARK: - Preview
 
 struct Preview: View {
-  
   @State var value: Double = 30
   
   var background: Color {
