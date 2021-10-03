@@ -5,7 +5,7 @@
 // Copyright (c) 2021 Michael Nisi and collaborators
 // Licensed under MIT License
 //
-// See https://github.com/michaelnisi/epic/blob/main/LICENSE for license information
+// See https://github.com/michaelnisi/clay/blob/main/LICENSE for license information
 //
 //===----------------------------------------------------------------------===//
 
